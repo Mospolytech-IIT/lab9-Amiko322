@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title>Лаборатораная работа №9</title>
+</head>
+
+<body>
+	<h1>Добавление пользователя</h1>
+	<div style="text-align: center;">
+        <form action="create-user" method="post">
+            <input id="username" placeholder="Логин"/>
+            <p><input id="email" type="email" placeholder="user@mail.ru"/></p>
+            <p><input type="password" id="password" placeholder="Пароль" /></p>
+            <p><input type="submit" value="Добавить" /></button></p>
+        </form>
+	</div>
+
+	<h2>Добавление поста</h2>
+	<div style="text-align: center;">
+        <form action="create-post" method="post">
+            <input placeholder="Заголовок"/>
+            <p><input placeholder="Содержимое"/></p>
+            <p><input type="number" id="userId" placeholder="User Id" /></p>
+            <p><input type="submit" value="Добавить" /></p>
+        </form>
+	</div>
+
+    <h2>Обновление email пользователя</h2>
+	<div style="text-align: center;">
+        <form action="update_user_email" method="post">
+            <p><input placeholder="Email"/></p>
+            <p><input type="number" id="userId" placeholder="User Id" /></p>
+            <p><input type="submit" value="Обновить"/></p>
+        </form>
+	</div>
+
+    <h2>Обновление контента поста</h2>
+    <div style="text-align: center;">
+        <form action="update_content_post" method="post">
+            <p><input type="number" placeholder="Post Id" /></p>
+            <p><input placeholder="Содержимое"/></p>
+            <p><input type="submit" value="Обновить" /></p>
+        </form>
+    </div>
+
+    <h2>Удаление пользователя</h2>
+	<div style="text-align: center;">
+        <form action="delete_user" method="post">
+            <p><input type="number" placeholder="User Id" /></p>
+            <p><input type="submit" value="Удалить"/></p>
+        </form>
+	</div>
+
+    <h2>Удаление поста</h2>
+	<div style="text-align: center;">
+        <form action="delete_post" method="post">
+            <p><input type="number" placeholder="Post Id" /></p>
+            <p><input type="submit" value="Удалить"/></p>
+        </form>
+	</div>
+
+	<h2>Список пользователей</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Логин</th>
+				<th>Email</th>
+				<th>Пароль</th>
+			</tr>
+		</thead>
+		<tbody id="usersTable"></tbody>
+	</table>
+
+	<h2>Список постов</h2>
+	<table>
+		<thead>
+			<tr>
+				<th>Заголовок</th>
+				<th>Содержимое</th>
+				<th>User Id</th>
+			</tr>
+		</thead>
+		<tbody id="postsTable"></tbody>
+	</table>
+
+	<script>
+		async function getUsers() {
+			const response = await fetch("/users");
+			const users = await response.json();
+			const rows = document.getElementById("usersTable");
+			rows.innerHTML = "";
+			users.forEach(user => rows.appendChild(createUserRow(user)));
+		}
+
+		async function getPosts() {
+			const response = await fetch("/posts");
+			const posts = await response.json();
+			const rows = document.getElementById("postsTable");
+			rows.innerHTML = "";
+			posts.forEach(post => rows.appendChild(createPostRow(post)));
+		}
+
+		window.onload = async () => {
+			await getUsers();
+			await getPosts();
+		};
+	</script>
+</body>
+
+</html>
